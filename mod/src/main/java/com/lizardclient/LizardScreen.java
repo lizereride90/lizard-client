@@ -4,7 +4,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.SliderWidget;
-import net.minecraft.client.gui.widget.SwitchWidget;
+import com.lizardclient.widgets.LizardSwitch;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
@@ -50,9 +50,7 @@ public class LizardScreen extends Screen {
             // Settings under each module
             for (ModuleSetting setting : m.settings) {
                 if (setting instanceof ModuleSetting.BoolSetting b) {
-                    addDrawableChild(new SwitchWidget(x + 10, y, 160, 20, Text.literal(b.label()), b.value(), sw -> {
-                        b.value(sw.isChecked());
-                    }));
+                    addDrawableChild(new LizardSwitch(x + 10, y, 160, 20, b.label(), b.value(), newVal -> b.setValue(newVal)));
                     y += 22;
                 } else if (setting instanceof ModuleSetting.NumberSetting n) {
                     addDrawableChild(new SimpleSlider(x + 10, y, 200, 20, n));
