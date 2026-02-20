@@ -19,17 +19,26 @@ public final class ModuleLoader {
 
     public static List<Module> loadModules() {
         List<Module> list = new ArrayList<>();
+
+        // Try loading from modules directory
         Path dir = resolveModulesDir();
-        if (dir == null) return list;
-        try {
-            if (!Files.isDirectory(dir)) return list;
-            Files.list(dir)
-                .filter(p -> p.getFileName().toString().toLowerCase().endsWith(".json"))
-                .forEach(p -> {
-                    Module m = parseModule(p.toFile());
-                    if (m != null) list.add(m);
-                });
-        } catch (Exception ignored) {}
+        if (dir != null && Files.isDirectory(dir)) {
+            try {
+                Files.list(dir)
+                    .filter(p -> p.getFileName().toString().toLowerCase().endsWith(".json"))
+                    .forEach(p -> {
+                        Module m = parseModule(p.toFile());
+                        if (m != null) list.add(m);
+                    });
+            } catch (Exception ignored) {
+            }
+        }
+
+        // Fallback to bundled defaults if nothing found
+        if (list.isEmpty()) {
+            list.addAll(defaultModules());
+        }
+
         return list;
     }
 
@@ -86,5 +95,51 @@ public final class ModuleLoader {
         Path p2 = Path.of("modules");
         if (Files.isDirectory(p2)) return p2;
         return null;
+    }
+
+    private static List<Module> defaultModules() {
+        List<Module> defaults = new ArrayList<>();
+
+        Module fly = new Module();
+        fly.id = "fly";
+        fly.name = "Fly";
+        fly.description = "Creative-style flight";
+        fly.keyCode = 70; // F
+        fly.settings.add(new ModuleSetting.NumberSetting("speed", "Speed", 1.0, 0.2, 5.0, 0.1));
+        defaults.add(fly);
+
+        Module killaura = new Module();
+        killaura.id = "killaura";
+        killaura.name = "KillAura";
+        killaura.description = "Auto-attack nearby targets";
+        killaura.keyCode = 75; // K
+        killaura.settings.add(new ModuleSetting.NumberSetting("range", "Range", 3.0, 1.0, 6.0, 0.1));
+        killaura.settings.add(new ModuleSetting.BoolSetting("targetsPlayers", "Players", true));
+        killaura.settings.add(new ModuleSetting.BoolSetting("targetsMobs", "Mobs", false));
+        defaults.add(killaura);
+
+        Module speed = new Module();
+        speed.id = "speed";
+        speed.name = "Speed";
+        speed.description = "Increase movement speed";
+        speed.keyCode = 71; // G
+        speed.settings.add(new ModuleSetting.NumberSetting("mult", "Multiplier", 1.5, 1.0, 5.0, 0.1));
+        defaults.add(speed);
+
+        Module xray = new Module();
+        xray.id = "xray";
+        xray.name = "XRay";
+        xray.description = "Highlight ores";
+        xray.keyCode = 88; // X
+        defaults.add(xray);
+
+        Module fullbright = new Module();
+        fullbright.id = "fullbright";
+        fullbright.name = "Fullbright";
+        fullbright.description = "Max brightness";
+        fullbright.keyCode = 86; // V
+        defaults.add(fullbright);
+
+        return defaults;
     }
 }
