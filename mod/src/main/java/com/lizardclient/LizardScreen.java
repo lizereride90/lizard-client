@@ -72,8 +72,21 @@ public class LizardScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        // Background and dim overlay for visibility
         this.renderBackground(context, mouseX, mouseY, delta);
+        context.fill(0, 0, width, height, 0xA0000000);
+
+        // Title
         context.drawCenteredTextWithShadow(textRenderer, this.title, width / 2, 12, 0xFFFFFF);
+
+        // If no modules, show a helpful message instead of blank UI
+        if (modules.isEmpty()) {
+            context.drawCenteredTextWithShadow(textRenderer,
+                Text.literal("No modules found in /sdcard/Download/modules"),
+                width / 2, height / 2, 0xFFDDDDDD);
+            return;
+        }
+
         super.render(context, mouseX, mouseY, delta);
     }
 
