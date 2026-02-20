@@ -24,7 +24,6 @@ dependencies {
 }
 
 loom {
-    splitEnvironmentSourceSets()
     mods {
         create("lizardclient") {
             sourceSet(sourceSets.main.get())
