@@ -72,7 +72,7 @@ public class LizardScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context);
+        this.renderBackground(context, mouseX, mouseY, delta);
         context.drawCenteredTextWithShadow(textRenderer, this.title, width / 2, 12, 0xFFFFFF);
         super.render(context, mouseX, mouseY, delta);
     }
@@ -102,7 +102,7 @@ public class LizardScreen extends Screen {
         protected void applyValue() {
             double range = setting.max() - setting.min();
             double val = setting.min() + this.value * range;
-            setting.value(val);
+            setting.setValue(val);
         }
     }
 
@@ -125,7 +125,7 @@ public class LizardScreen extends Screen {
 
         @Override
         public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-            this.renderBackground(context);
+            this.renderBackground(context, mouseX, mouseY, delta);
             context.drawCenteredTextWithShadow(textRenderer, Text.literal("Press any key for " + module.name + " (ESC to clear)"), width / 2, height / 2 - 10, 0xFFFFFF);
             super.render(context, mouseX, mouseY, delta);
         }
