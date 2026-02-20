@@ -42,6 +42,8 @@ public class LizardClient implements ClientModInitializer {
 
     private void openGui(MinecraftClient client) {
         if (client != null) {
+            // reload modules from disk each time the GUI opens, so only modules present in folder are shown
+            modules = ModuleLoader.loadModules();
             client.setScreen(new LizardScreen(modules));
         }
     }
