@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "lizardclient",
+  "version": "${version}",
+  "name": "Lizard Client",
+  "description": "Lightweight module client with dynamic modules.",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.lizardclient.LizardClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.5",
+    "fabric": "*",
+    "minecraft": "1.21.x",
+    "java": ">=17"
+  }
+}
